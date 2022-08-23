@@ -78,4 +78,9 @@ public class Checkout {
             throw new UnsupportedOperationException(String.format("Product %s is not in basket", productID));
         }
     }
+
+    public void clear() {
+        naiveTotal = 0.0;
+        basket.clear();
+    }
 }

@@ -29,96 +29,97 @@ public class CheckoutTest {
         new Product("CF1", "Coffee", 11.23)
     );
     ProductRepository productRepository = new LocalProductRepository(products);
+    Checkout checkout = new Checkout(offerRepository, productRepository);
 
     @Test
     void official_test_one() {
-        Checkout checkout = new Checkout(offerRepository, productRepository);
         checkout.scan("FR1");
         checkout.scan("SR1");
         checkout.scan("FR1");
         checkout.scan("FR1");
         checkout.scan("CF1");
         assertThat(checkout.total()).isEqualTo(22.45);
+        checkout.clear();
     }
 
     @Test
     void official_test_three() {
-        Checkout checkout = new Checkout(offerRepository, productRepository);
         checkout.scan("SR1");
         checkout.scan("SR1");
         checkout.scan("FR1");
         checkout.scan("SR1");
         assertThat(checkout.total()).isEqualTo(16.61);
+        checkout.clear();
     }
 
     @Test
     void scan_illegal_item() {
-        Checkout checkout = new Checkout(offerRepository, productRepository);
         ThrowableAssert.ThrowingCallable scanNonexistentItem = () -> checkout.scan("null");
         Assertions.assertThatThrownBy(scanNonexistentItem).isInstanceOf(IllegalArgumentException.class);
+        checkout.clear();
     }
 
     @Test
     void one_fruit_tea() {
-        Checkout checkout = new Checkout(offerRepository, productRepository);
         checkout.scan("FR1");
         assertThat(checkout.total()).isEqualTo(3.11);
+        checkout.clear();
     }
 
     @Test
     void one_strawberries() {
-        Checkout checkout = new Checkout(offerRepository, productRepository);
         checkout.scan("SR1");
         assertThat(checkout.total()).isEqualTo(5.00);
+        checkout.clear();
     }
 
     @Test
     void one_coffee() {
-        Checkout checkout = new Checkout(offerRepository, productRepository);
         checkout.scan("CF1");
         assertThat(checkout.total()).isEqualTo(11.23);
+        checkout.clear();
     }
 
     @Test
     void two_fruit_teas() {
-        Checkout checkout = new Checkout(offerRepository, productRepository);
         checkout.scan("FR1");
         checkout.scan("FR1");
         assertThat(checkout.total()).isEqualTo(3.11);
+        checkout.clear();
     }
 
     @Test
     void two_strawberries() {
-        Checkout checkout = new Checkout(offerRepository, productRepository);
         checkout.scan("SR1");
         checkout.scan("SR1");
         assertThat(checkout.total()).isEqualTo(5.00 * 2);
+        checkout.clear();
     }
 
     @Test
     void two_coffees() {
-        Checkout checkout = new Checkout(offerRepository, productRepository);
         checkout.scan("CF1");
         checkout.scan("CF1");
         assertThat(checkout.total()).isEqualTo(11.23 * 2);
+        checkout.clear();
     }
 
     @Test
     void naiveTotal() {
-        Checkout checkout = new Checkout(offerRepository, productRepository);
         checkout.scan("FR1");
         checkout.scan("SR1");
         checkout.unscan("FR1");
         checkout.scan("FR1");
         checkout.scan("CF1");
         assertThat(checkout.totalWithoutOffers()).isEqualTo(19.34);
+        checkout.clear();
     }
 
     @Test
     void unscan() {
-        Checkout checkout = new Checkout(offerRepository, productRepository);
         checkout.scan("SR1");
         checkout.unscan("SR1");
         assertThat(checkout.total()).isEqualTo(0.0);
+        checkout.clear();
     }
 }
