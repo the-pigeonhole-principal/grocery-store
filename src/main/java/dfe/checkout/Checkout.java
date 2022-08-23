@@ -45,11 +45,11 @@ public class Checkout {
             Product product = productRepository.getProductByID(basketItem.getKey()).get();
             Integer quantity = basketItem.getValue();
 
-            Offer offer = offerRepository.getOfferByItemID(product.getId());
-            if (offer == null) {
+            Optional<Offer> offerSearch = offerRepository.getOfferByItemID(product.getId());
+            if (offerSearch.isEmpty()) {
                 sum += product.getPrice() * quantity;
             } else {
-                sum += offer.calculatePrice(product, quantity);
+                sum += offerSearch.get().calculatePrice(product, quantity);
             }
         }
         return sum;

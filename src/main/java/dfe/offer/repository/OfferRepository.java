@@ -2,6 +2,8 @@ package dfe.offer.repository;
 
 import dfe.offer.Offer;
 
+import java.util.Optional;
+
 public interface OfferRepository {
-    Offer getOfferByItemID(String itemId);
+    Optional<Offer> getOfferByItemID(String itemId);
 }
